@@ -1,0 +1,530 @@
+git clone https://github.com/fabrizio-s/hello-world.git
+git add file.txt [{staging area}]
+git commit -m "commit message"
+git commit -am "commit message" [stage + commit tracked files.]
+git push origin master
+git push -u origin master [-u For every branch that is up to date or successfully pushed, add upstream (tracking) reference.]
+git ls-files [lists all currently tracked files]
+git reset HEAD file.txt [unstage file.txt]
+git checkout -- file.txt [revert changes of unstaged file.txt]
+git mv old_filename.txt new_filename.txt
+git add -A old_filename.txt new_filename.txt [-A is required to update indexes/see the operation as a rename rather than a delete + new untracked file]
+git rm tracked_file.txt [removes tracked file from working directory and stages the deletion]
+git push --delete origin bugfix/EX-26 [delete remote branch bugfix/EX-26.]
+git add -u [adds all already-tracked files to staging area (updates index).]
+git fetch && git merge [(git pull)]
+git clean -n [{delete} display everything that would be deleted by running the 'git clean'.]
+git clean -f [{delete} force delete untracked files.]
+git clean -fd [{delete} force delete untracked directories.]
+git diff-tree --no-commit-id --name-only -r 33d19e0 [(diff) list files modified in a given commit.]
+
+git config --global user.name fabrizio-s
+git config --global user.email fabrizio@example.com
+git config --global core.editor vim
+git config --global --list [display properties of ~/.gitconfig]
+git config --global -e [opens config file with core editor.]
+git config --global merge.tool vimdiff [(mergetool)]
+
+git log --abbrev-commit [shows a histoy of commits, --abbrev-commit shortens the length of the sha1 identifier]
+git log --oneline [history with one commit per line]
+git log --oneline --graph --decorate --all [--decorate will display the branch names next to the commits that they are currently on.]
+git log --since="2 hours ago"
+git log -- file.txt [lists commits that involve file.txt]
+git show <commit-id> [shows all changes involved in the commit of given id]
+git config --global alias.hist "log --all --graph --decorate --oneline" && git hist
+git reflog [git actions history (i.e user commits, reverts, etc.)]
+
+git diff [diff on current branch between staging area and working directory.]
+git diff HEAD [diff on current branch between last commit and working directory.]
+git diff --staged HEAD [diff on current branch between last commit and staging area.]
+git diff file.txt [diff of file.txt on current branch between staging area and working directory.]
+git diff HEAD HEAD^ [diff between HEAD and the commit before HEAD.]
+git diff -- master origin/master [diff between branches: local master and remote (origin) master.]
+git diff ae6f872 HEAD [diff between commits.]
+git difftool [Visual diff on current branch between staging area and working directory, if configured.]
+git diff HEAD^^^ HEAD^^ [diff between 3rd to last commit and 2nd to last commit.]
+git diff 28d5daf^ 28d5daf [diff between a specific commit and its parent/preceding commit; shows what was added/modified in the specified commit.]
+
+git branch -a [list both local and remote branches.]
+git branch my-new-branch [Create a new branch with name my-new-branch.]
+git branch -u upstream-branch my-new-branch [Set up my-new-branch's tracking information so upstream-branch is considered my-new-branch's upstream branch.]
+git branch -m old-branch-name new-branch-name [Rename a branch.]
+git branch -d branch-to-delete [Delete a branch.]
+
+git checkout some-branch [Switch to the branch some-branch.]
+git checkout origin/remote-branch [creates an appropriately named local branch from a remote branch.]
+git checkout -b new-branch [-b creates the branch before checking it out.]
+git checkout -b some-other-branch some-branch [create a new branch from some-branch and performs checkout on it.]
+
+git merge some-branch [automatic merge of some-branch into current branch. This automatic merge will fail if there are conflicts between the two branches. Merging will then have to be done manually.]
+git merge master [update your current branch with all changes made on master.]
+git merge --no-ff some-branch [--no-ff disables fast-forward, which results in a single 'Merge commit' of some-branch into current branch, rather than the whole history of commits.]
+git merge some-branch -m "Merging changes from some-branch." [If merge will result into a single commit, -m specifies the commit message (default is something like 'Merging of some-branch').]
+git mergetool [If configured (i.e p4merge), lauches the mergetool, which is useful (required?) for manually resolving merge conflicts. Git will create .orig files as a backup of the files in conflict. Use the mergetool to resolve conflicts, save from the mergetool to modify the files containing the conflicts, and commit to resolve the conflicts.]
+git rm --cached frontend/0000/index.html [untrack a file.]
+git update-index --assume-unchanged frontend/0000-sandbox/* [ignore changes in tracked files.]
+git update-index --no-assume-unchanged frontend/0000-sandbox/* [stop ignoring changes in tracked files.]
+git merge --abort [abort merge conflict.]
+git merge --squash work-lavorazione-richiesta [squash all commits into a single commit.]
+
+git rebase master [while on some other branch, if commits have been made to master since you checked out your current branch from master, does a rewind, takes the changes/commits from master, and creates a new commit (on top of the new changes from master) of your changes on your current branch, so as to enable a fast-forward with master.]
+git rebase master feature [rebase the feature branch onto the master branch without first having to check out the feature branch.]
+git rebase --abort [abort a rebase conflict.]
+git rebase --continue [proceed with rebase after rebase conflict resolution.]
+git pull --rebase [pull + rebase changes on current branch on top of pulled changes. DO NOT REBASE COMMITS THAT EXIST OUTSIDE OF YOUR REPOSITORY AND PEOPLE MAY HAVE BASED WORK ON THEM.]
+git rebase --onto master server client [“Take the client branch, figure out the patches since it diverged from the server branch, and replay these patches in the client branch as if it was based directly off the master branch instead.”]
+
+git reset --hard a48c6c7 [revert current branch to specified commit; discards working directory.]
+git reset --soft a48c6c7 [revert current branch to specified commit; but preserves working directory/staging area.]
+git reset --mixed a48c6c7 [--mixed is the default mode. preserves only the working directory, not the staging area.]
+git reset HEAD^ [soft revert to previous commit.]
+git reset HEAD@{7} [mixed reset to 7 commits ago. you can see which commit this is with 'git reflog'.]
+
+git stash [same as 'git stash save'. stashes can only save tracked files.]
+git stash -u [-u will also stash untracked files.]
+git stash save "my stash message." [git stash + add message to the stash being saved.]
+git stash show stash@{1} [shows the files modified in the stash at the specified index.]
+git stash clear
+git stash pop [same as 'git stash apply && git stash drop'.]
+git stash drop [discard the latest stash.]
+git stash apply [apply the latest stash.]
+git stash apply stash@{3} [apply the stash at the specified index (3).]
+git stash list [list stashes.]
+git stash branch newchanges [creates a new branch 'newchanges', switches to that branch, applies and then drops the most recent stash. N.B does NOT do a 'git stash' before creating the new branch.]
+
+git tag clamav [adds the tag 'clamav' to HEAD.]
+git tag --list [list all tags.]
+git tag --delete tagname [delete tag 'tagname'.]
+git tag -a mytag [-a creates an annotated tag. annotated tags have messages associated (like a commit message); will prompt for message with configured git editor.]
+git show mytag [{git tag}]
+git show clamav -- [{git tag} add '--' in case of ambiguous argument.]
+git tag mytag -m "my message." [-m to specify annotated tag message. -m implies -a, if not specified.]
+git diff tag1 tag2 [{git tag}]
+git tag -a tagname 97bbaca [tag a specific commit.]
+git push origin tagname [{git tag} push tag to remote.]
+git push origin master --tags [{git tag} push all tags.]
+git push origin :tagname [{git tag} associate no commit with the tag tagname, so delete it.] 
+
+git cherry-pick 1c82df6 [while on some branch (i.e master), pick single commits of another branch to be applied to your current branch.]
+
+:diffget LOCAL [{vimdiff}{git}{mergetool}]
+:diffget BASE [{vimdiff}{git}{mergetool}]
+:diffget REMOTE [{vimdiff}{git}{mergetool}]
+
+
+
+sh ip int brief [{cisco}]
+sh ver [{cisco} display image version.]
+
+conf t [{cisco} router configuration mode.]
+
+int f0/0 [{cisco}{config-mode} configure this interface.]
+ip address 10.1.1.1 255.255.255.0 [{cisco}{config-mode}]
+
+int loop 0 [{cisco}{config-mode}]
+ip address 1.1.1.1 255.255.255.255 [{cisco}{config-mode}]
+
+end [{cisco}{config-mode} exit configuration mode.]
+
+no shut [{cisco}{config-mode} enable interface.]
+
+router ospf 1 [{cisco}{config-mode} enable ospf with PID 1.]
+network 0.0.0.0 255.255.255.255 area 0 [{cisco}{config-mode} enable ospf on all interface in area 0.]
+
+sh ip ospf neighbor [{cisco} show ospf neighbors.]
+
+sh ip route [{cisco} display summary information about all directly connected routes.]
+
+copy running-config startup-config [{cisco} save router configuration.]
+
+ip address dhcp [{cisco}{config-mode} enable dhcp on selected interface.]
+
+host R1 [{cisco}{config-mode} re-name host to R1.]
+
+sh ip default-gateway [{cisco}]
+
+ip domain lookup [{cisco}{config-mode} execute DNS lookup.]
+no ip domain lookup [{cisco}{config-mode}]
+
+ip nat outside [{cisco}{config-mode} from f0/0 on R2 to f0/1 on R1.]
+ip nat inside [{cisco}{config-mode} from f0/1 on R2 with configured ip address.]
+ip nat inside source list 1 interface gigabitEtherner 0/0 overload [{cisco}{config-mode}]
+access-list 1 permit any [{cisco}{config-mode}]
+
+sh run [{cisco}]
+
+ip route 0.0.0.0 0.0.0.0 10.1.1.254 [{cisco}{config-mode}]
+ip domain-lookup [{cisco}{config-mode}]
+ip name-server 8.8.8.8 [{cisco}]
+
+
+
+:set <option> [{vim}{option} set <option> to true.]
+:set <option>! [{vim}{option} toggle <option>.]
+:set number [{vim}{option} display line numbers.]
+:move +1 [{vim} move line to next line.]
+:7 [{vim} go to line 7.]
+:set nowrap [{vim}{option} disable line wrap.]
+yy [{vim}{copy}{yank}{paste} copy current line.]
+p [{vim}{copy}{paste} paste to next line.]
+P [{vim}{copy}{paste} paste to previous line.]
+gg [{vim} go to first line.]
+G [{vim} go to last line.]
+^ [{vim} go to beginning of current line.]
+$ [{vim} go to end of current line.]
+ZZ [{vim} save and quit?]
+:wq [{vim}]
+:q! [{vim}]
+:xa [{vim}]
+
+i [{vim} insert mode.]
+ESC [{vim} normal mode.]
+: [{vim} line mode.]
+h/j/k/l [{vim} movement left/down/up/right, respectively.]
+Ctrl+f [{vim} page forward/down.]
+Ctrl+b [{vim} page backward/up.]
+z+ENTER [{vim} page down BUT keep cursor in same line.]
+w [{vim}{motion} move right by 1 word.]
+b [{vim}{motion} move left by 1 word.]
+W [{vim}{motion} move right by 1 word, ignore punctuation.]
+B [{vim}{motion} move left by 1 word, ignore punctuation.]
+r [{vim}{delete} replace character.]
+21gg [{vim}{motion} go to line 21.]
+21G [{vim}{motion} go to line 21.]
+:$ [{vim} go to last line.]
+Ctrl+g [{vim} display number of lines in file.]
+:set ruler [{vim}{option} display line,column at bottom right.]
+x [{vim} delete single character at cursor.]
+X [{vim} delete the character that comes before the character at cursor.]
+d<motion> [{vim}{operator}{motion} delete up to where motion would take the cursor.]
+dw [{vim}{delete}{motion} delete word forward.]
+d3w [{vim}{delete}{motion} delete 3 words forward.]
+d$ [{vim}{delete}{motion} delete from cursor to end of line.]
+3w [{vim}{motion} repeat word motion 3 times.]
+d3w [{vim}{delete}{motion} delete the '3w' motion.]
+d3gg [{vim}{delete}{motion} delete the '3gg' motion.]
+. [{vim} repeat previous command.]
+D [{vim} delete from cursor to end of line.]
+
+
+
+chmod g=rx,o=rx temp.txt [{file permissions}{file modes}]
+chmod go+r temp.txt [{file permissions}{file modes}]
+chmod -R u=rwx,g=rx,o=r Temp/ [{file permissions}{file modes}]
+groupmod -n ubuntu-users fabrizio [{groups} rename a group.]
+ps -ef | grep process_name
+find ~/Documents -type f -name temp.txt
+find ~/Documents/ -name '*_commands.txt' -print ['' required for wildcards, -print appends a new line to the end of each output, as opposed to -print0]
+locate *_commands.txt [{find} looks for a file, but only finds it if it's indexed]
+printenv PATH [{environment variables}]
+kill 9580 9581 9582
+sudo apt purge package-to-uninstall [{aptitude} complete uninstall.]
+systemctl stop mysql.service
+service mysql start
+sudo chown mysql:mysql /var/run/mysqld
+shred -vzun 10 temp.txt [-v verbose, -z overwrite with zeroes (on final iteration), -n number of times to overwrite, -u remove file after overwriting it.]
+unzip Downloads/imglib.zip
+cat t?mp.txt [{wildcards} '?' matches any single character]
+rmdir -vp Temp/temp1/temp2/temp3/ [-v verbose; -p removes parent directory/directories.]
+grep keyword < file.txt > out.txt 2> error.txt [{redirection}]
+cat linux_commands.txt >| force_overwrite_contents_of_this_file.txt [{redirection}]
+echo "Append this new line to linux_commands.txt" >> Documents/linux_commands.txt [{redirection}]
+grep -i cAsE_iNsEnSiTiVe_sEaRchWoRd file.txt [-i case insensitive filter/search/match.]
+grep -v not_matching_this_keyword file.txt [-v reverse search/not marching.]
+grep -E "^[A-Z][a-z]+$" /usr/share/dict/words [{wildcards}]
+diff file1.txt fil2.txt
+file linux_commands.txt [attempts(?) to guess the file format]
+find Music/ -type f -name *.ini -delete [-delete delete all files in any subdirectory of Music/ matching *.ini]
+head -n 3 linux_commands.txt [prints first 3 lines of file]
+tail -f growing_log_file.log [follows the output of file, printing in real time]
+tail +25 linux_commands.txt [prints all lines starting at line 25]
+sort -nr linux_commands.txt [-n sorts lines of file in numeric order, -r reverse sort]
+passwd [change current user's password]
+STUFF=blah && export STUFF && printenv | grep -i stuff [{environment variables} set shell var 'STUFF', export it to env, print it from env vars]
+man -k sort [finds commands containing the keyword 'sort']
+set -C [disallow existing regular files to be overwritten by redirection of output]
+cat /proc/cpuinfo | tr a-z A-Z [{wildcards} translates contents of /proc/cpuinfo by turning all lowercase letters into uppercase]
+ls /fffffffffffffff > temp.txt 2>&1 [sends stdout of ls to temp.txt, and stderr to stdout (so, also to temp.txt)]
+sudo apt update && sudo apt dist-upgrade [{apt update}{apt-get update} apt update will update local cache.]
+kill -STOP pid && kill -CONT pid [use -STOP to freeze process instead of terminating it; use -CONT to unfreeze.]
+kill -INT pid [same as doing CTRL+C]
+kill -KILL pid [Most brutal way to terminate a process. Forcibly removes the process from memory, without any sort of clean-up.]
+kill -TSTP pid [To send the process to the background; same as doing CTRL+Z]
+kill -l [To list all signals.]
+fg [To bring process to foreground .. ?]
+gunzip file.gz & [decompress file.gz using gunzip in the background. The process will keep running even if you log out. If the background process has any output, it's best to redirect it so as not to confuse it with the foreground process' output.]
+CTRL+Z [{shortcut} kill -TSTP foreground process]
+CTRL+L [{shortcut} clear]
+ls -l /usr/bin/passwd [notice how this executable file has an x in the user permissions listing. This means the executable is 'setuid', meaning the executable runs as though the user running the executable were the owner.]
+anaconda-navigator > anaconda-navigator.out 2>&1 &
+gcc -c file1.c file2.c [Compile/assemble source files, but do not link; produces file1.o, file2.o]
+gcc -o executable file.c [Compile and link source files; only one executable per main function]
+gcc -wall -o app.exe file.c
+gcc -wall -lm -o app.exe file.c [include math library with -lm]
+gcc -wall -o app.exe file.c compiled.o [compile and link, including already compiled file comiled.o]
+gcc -wall -o app.exe file1.c file2.c [compile and link file1.c and file2.c into the executable app.exe]
+youtube-dl -f bestaudio --extract-audio --audio-format mp3 --audio-quality 0 https://www.youtube.com/watch?v=dQw4w9WgXcQ
+mysql -u root -p
+gnome-disks [manage (safely remove etc) external drives]
+sudo clamscan -r --move=/tmp/virus /media/fabrizio/01D4C602EF1C98D0 [scan windows partition.]
+ifconfig wlo1
+nmap -sP 192.168.1.0/24
+ufw status
+sudo ufw allow from 192.168.1.5 to any port 8080
+sudo ufw allow from 192.168.1.0/24 to any port 8080
+sudo ufw delete 1
+stat file.txt [display file properties.]
+tar -xvzf file.tar.gz [-x extract; -v verbose; -z use gunzip to decompress .gz ('tar -xzf file.tar.gz' is the same as 'zcat file.tar.gz | tar -xf -'); -f must be the last flag of the command, and the tar file must be immediately after. It tells tar the name and path of the compressed file. A .tar.gz file is the same as a .tgz file.]
+tar -xvf archive.tar some_file [extracts only some_file from archive.tar]
+tar -xf Nordic-Folders.tar.xz & [tar can decompress .xz]
+tar -cf archive.tar file1 file2 [-c flag to create archive.tar of file1 and file2.]
+tar -tf Obscure-Green.tar.xz [displays contents of Obscure-Green.tar.xz archive.]
+tar -xpf Obscure-Green.tar.xz [-p flag preserves permissions.]
+unxz -dc Obscure-Green.tar.xz | tar -xf - [-d decompress; -c send to stdout; tar will unarchive from stdout.]
+gunzip -dc Obscure-Green.tar.gz | tar -xf - [-d decompress; -c send to stdout; tar will unarchive from stdout.]
+zcat Obscure-Green.tar.gz | tar -xf - [zcat is the same as gunzip -dc]
+ln -s ~/Projects/learning/ learning [create a symbolic link named 'learning' that points to '~/Projects/learning'.]
+dd if=linux_commands.txt of=temp.txt bs=64 count=1 skip=0 [copies bytes from input file/stream to output file/stream. 'if' input file; 'of' output file; 'bs' block size (in bytes; 1024=1k); 'count' number of blocks; 'skip' number of blocks to skip.]
+lsscsi [lists SCSI devices on the system. In the output, first column is the address of the device on the system, the second column is the type of the device, the last column is the device file (i.e /dev/sda, where the prefix 'sd' stands for SCSI disk). All other columns are vendor specific information.]
+sudo parted -l [lists disks and their partitions.]
+free -h [Display amount of free and used memory in the system. -h for more human readable format.]
+grep -w lm /proc/cpuinfo [-w will match only words (i.e 'lm' is at the beginning of the line, preceded/followed by non-word characters).]
+pwd | xclip -selection clipboard [copy pwd to clipboard.]
+pip install --upgrade youtube-dl [update youtube-dl.]
+find Music/ -type f -iname *rick* [-iname case insensitive search.]
+find / -mmin -60 [find all files modified in the last 60 minutes.]
+find / -size +50M -size -100M [find files in size range (greater than 50MB and less than 100MB).]
+find /home/bob -cmin -60 [find files changed in last 60 minutes.]
+sudo chown -R fabrizio /opt/wildfly-16.0.0.Final/ [-R recursively changes owner of all subfolders and files to the user fabrizio.]
+time sudo mysql -p -t < test_employees_sha.sql [time - "run a program/command and summarize system resource usage" (time in seconds taken to execute the program/command).]
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+apt-key list [list all added keys through 'sudo apt-key add' command.]
+sudo add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" [add apt repository.]
+sudo apt remove virtualbox virtualbox-* [uninstall all(?) versions of virtualbox.]
+ls /sys/firmware/efi/efivars [should not be empty if on efi system.]
+lsblk [{hardware} print block devices (storage drives etc).]
+cgdisk /dev/sda [partition table manipulator.]
+mkfs.fat -F32 /dev/sda1 [format /dev/sda (extended system partition) as FAT32.]
+mkswap /dev/sda2 [make /dev/sda2 a swap partition.]
+swapon /dev/sda2 [enable /dev/sda2 for swapping.]
+mkfs.ext4 /dev/sda3 [make am ext4 file system in /dev/sda3.]
+mount /dev/sda3 /mnt [mount /dev/sda3 on /mnt. See https://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/mnt.html]
+mount /dev/sda1 /mnt/boot [assuming /dev/sda1 is a boot (efi) partition, mount on /mnt/boot.]
+df [report file system disk space usage. use check where /dev/sda partitions are mounted.]
+tail commands.txt | cat -n - ['cat -n' the last 10 lines (tail) of commands.txt. does the same without the final '-'.]
+genfstab -U /mnt >> /mnt/etc/fstab [Generate an fstab file. -U to define by UUID. See https://wiki.archlinux.org/index.php/Fstab]
+hwclock --systohc
+systemctl enable dhcpcd@ens18 [enable dhcp on interface ens18.]
+ip addr show [list network interfaces.]
+sudo visudo [modify the sudoers file.]
+sudo systemctl restart sshd
+sudo systemctl enable sshd
+passwd brad [set a new password for user brad.]
+ssh brad@192.168.0.83
+cut -d: -f1 /etc/passwd [display all users on local machine.]
+gnome-session-quit [logout of current user session in gnome DE (ubuntu).]
+id user [print real and effective user and group IDs.]
+getent group docker [list all users in the docker group.]
+ss -tunlep [(netstat)]
+ls -l /proc/swaps
+swapon --show
+ps aux | grep java
+sudo swapoff /swapfile
+sudo rm /swapfile
+sudo fallocate -l 16G /swapfile
+ls -lh /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+7z x docker_be.7z
+apparmor_status
+sed -i 's/jdk1.6.0_45/jdk1.7.0_80/g' **/*
+sed -i 's/jdk1.6.0_45/jdk1.7.0_80/g' ./wlserver_10.3/.product.properties ./user_projects/domains/base_domain/bin/setDomainEnv.sh ./user_projects/domains/base_domain/init-info/domain-info.xml ./user_projects/domains/base_domain/init-info/tokenVal
+sudo openconnect vpn.inail.it
+reboot [restart this machine.]
+poweroff [power off/turn off/shut down this machine.]
+sudo apt autoremove [clean after doing an apt purge or remove.]
+sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/jdk1.8.0_212/jre/bin/java" 1
+sudo update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jvm/jdk1.8.0_212/bin/javac" 1
+sudo update-alternatives --config java
+sudo update-alternatives --config javac
+df -h [check disk usage.]
+echo "/swapfile none swap sw 0 0" | sudo tee -a /etc/fstab [tee -a to append line to /etc/fstab.]
+sudo ln -s /usr/local/bin/sqldeveloper/sqldeveloper.sh /usr/bin/sqldeveloper [make sym link to unzipped binary so that it is available as command 'sqldeveloper'.]
+sudo usermod -a -G docker fabrizio [add user 'fabrizio' to group 'docker'. requires log out and back in to take effect. -a to append user to group; -G to specify the group(s) in csv format.]
+df -hT -t ext4 -t nfs -t fuseblk [-T to include file system type; -t to specify the type of file system.]
+lsof [list all open files.]
+zip -r files-to-compress.zip files-to-compress [make a zip file named "files-to-compress.zip" of directory "files-to-compress".]
+sudo dmidecode -t system [{hardware}]
+sudo dmidecode -t baseboard [{hardware}]
+lshw [list hardware.]
+apt list --installed [list all installed apt packages.]
+sudo lshw -class disk [{hardware} list physical disk information, such as serial number.]
+speaker-test -c 2 -r 48000 -D hw:0,3 [test sound output devices (?)]
+sudo echo "options iwlwifi led_mode=1" >> /etc/modprobe.d/wlan.conf [fix blinking wifi led on my hp laptop.]
+echo "alias grep=\"grep --color=auto\"" >> ~/.bashrc && source ~/.bashrc [make and persist an alias for grep for color highlighting. N.B. aliases should generally be placed in '~/.bash_aliases'.]
+sudo eject /dev/sdb [eject /dev/sdb drive.]
+fdisk -l [{hardware} list partition tables for devices mentioned in /proc/partitions]
+udisksctl unmount -b /dev/sdb1 && udisksctl power-off -b /dev/sdb [unmount /dev/sdb1 and then power-off the /dev/sdb drive for safely ejecting. all partitions of the device must be unmounted in order for power-off to work.]
+lscpu [{hardware} display information about cpu.]
+conda config --set changeps1 False [hide (base) from bash command prompt after running init scripts after anaconda3 installation.]
+sudo adduser guest [add new user 'guest'. the command adduser is a friendly frontend for the useradd command.]
+pkill -u fabrizio [logout the user fabrizio.]
+lxde-logout [log out of current session on lxde desktop environment.]
+lspci | grep -i audio [list all sound cards.]
+ng serve --proxy-config proxy.config.json [configure a proxy for Angular app with angular/cli.]
+scp Downloads/Anaconda3-2019.03-Linux-x86_64.sh fabrizio@192.168.1.10:/home/fabrizio [copy file via ssh.]
+nmap 192.168.1.11 255.255.255.0 [scan for open ports on the given host address]
+pip install termcolor [python module for colored terminal text.]
+scp fabrizio@192.168.1.10:/home/fabrizio/photo-app-discovery-service.zip /home/fabrizio [copy file from remote machine to home directory via ssh.]
+sudo ufw enable [enable ufw when it's inactive.]
+sudo ufw allow from 192.168.1.11 [allow connections from ip to any port.]
+sudo openfortivpn mydomain.com:9898 -u username -p password
+sudo sysctl fs.inotify.max_user_watches=524288 && sudo sysctl -p --system [fixed auto-reload on angular/cli ng serve.]
+echo fs.inotify.max_user_watches=524288 | sudo tee /etc/sysctl.d/40-max-user-watches.conf && sudo sysctl --system
+kill %1 [kill the process with job id 1.]
+curl -v -X GET http://192.168.1.11:8010 [basic GET http request with cURL]
+curl -v -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://192.168.1.10:8010 [specify headers with cURL]
+readlink /usr/bin/javac [print symbolic link target.]
+readlink -f /usr/bin/javac [-f find symbolic link target recursively until non-symbolic link is reached, and then print.]
+dirname /home/fabrizio/Projects/learning/linux/commands/linux_commands.txt [print dir where file is located (strips the last '/')]
+dirname `readlink -f symbolic-link` [print directory of the specified symbolic link's target.]
+sudo lsof -i -P -n | grep LISTEN [list ports that are being listened on.]
+xdg-open . [open current directory in file browser/manager. works on all desktop environments.]
+tail -n+0 commands
+sed 's/^.//' ../temp.txt [remove first character from every string in ../temp.txt
+uname -a [print the kernel version currently being run.]
+ip addr show wlp9s0 [show address settings on wlp9s0 interface.]
+du -sh ~/Downloads [display disk usage (i.e 335M) of the specified directory.]
+netstat -tulpn [check for open ports. run as root to see values on "PID/Program Name" column.]
+export PATH=$PATH:/opt/lampp && echo "export PATH=$PATH:/opt/lampp" >> ~/.profile [append & persist path to PATH environment variable.]
+cd $(dirname $(readlink -fn xampp)) [cd into the output of 'dirname /home/fabrizio/xampp']
+sudo dd bs=4M if=Downloads/archlinux-2019.08.01-x86_64.iso of=/dev/sdb && sync [create live usb from .iso]
+grep -R "this.store.select" . [-R recursively search for the string 'this.store.select' in all files under current directory.]
+lspci -k ["Show kernel drivers handling each device and also kernel modules capable of handling it".]
+wifi-menu
+iw dev
+iw dev wlo1 scan | grep -iE "SSID|signal"
+iw dev wlo1 scan | grep -i -e SSID -e signal
+iw dev wlo1 link
+ip link
+ip link show wlo1
+wpa_cli [see https://wiki.archlinux.org/index.php/WPA_supplicant]
+fdisk -l /dev/sda [{hardware} list partition tables for /dev/sda]
+gdisk -l /dev/sda [list partition tables for /dev/sda with gdisk (for GUID Partition Tables)]
+timedatectl | grep local [check hardware clock time standard ("no" for UTC, "yes" for localtime).]
+gpasswd -d fabrizio wheel [remove user 'fabrizio' from the group 'wheel'.]
+grub-mkconfig -o /boot/grub/grub.cfg [re-generate grub.cfg after having edited '/etc/default/grub'.]
+chmod 600 file [user-only read/write permissions.]
+chmod 640 file [user read/write, group read permissions.]
+chown -h fabrizio:fabrizio file [-h affects symbolic links.]
+groupadd new-group [creates a new group.]
+pacman -Syu [-S sync; -y refresh/download fresh copy of package db; -u system upgrade/upgrade all out-of-date packages.]
+firejail --apparmor firefox [launch firefox in a firejail sandbox with apparmor integration.]
+history -c [clears history of current bash session.]
+pacman -Rcns terminator [remove package and its dependencies. HARD RECURSIVE DEP REMOVAL.]
+pacman -Rs [safe package removal.]
+exit [shortcut is Ctrl+D]
+man man [(1*.) User commands; (2.) System calls; (3.) C library functions; (4.) Devices and special files; (5*.) File formats and conventions; (6.) Games; (7.) Miscellaneous; (8*.) System administration tools and daemons.]
+man -k which [search for keyword 'which' in list of commands and their descriptions.]
+date [display current date.]
+cal -y [calendar for current year.]
+cal -A 1 -B 1 [-A number of months to print that come after the current month; -B numberof months to print that come before the current month.]
+cat 0< input.txt 1> output.txt 2> error.txt [basic redirection.]
+grep -i hello 0< input.txt [input stream with grep.]
+tty [print the file name of the terminal connected to standard input.]
+cat < input.txt 1> /dev/pts/1 2>&1 [redirect output to /dev/pts/1 terminal.]
+date | cut --delimiter " " --fields 1 [--delimiter (-d) specifies the delimiter where each line should be split (default is tab \t); --fields (-f) specifies the field to print (not zero based).]
+cat < input.txt | cut -d " " -f 1,2,3
+cat < input.txt | tee output.txt | less [placing the tee command in between cat and less will do two things: redirect the output of cat to output.txt, and also output it as the stdin of the less command. the tee command 'saves a snapshot' of the piped stream of data in the specified file.]
+git push && cd && clear [after push, cd to home and clear.]
+date | xargs echo [the echo command does not accept stdin, so 'date | echo' does not echo the output of date; to convert the stdout of date into the argument of the echo command, user xargs like so.]
+date | xargs echo "Hello, World!" ['Hello, World!' will be printed first, and then the xargs argument.]
+date | cut -d " " -f 1,6 | tr -d "," | xargs echo "Hello, World! Today is" ['tr -d STR' deletes all occurrences of the characters in the specified string from stdin.]
+cat list-of-files-to-delete.txt | xargs rm
+file asd [file formats/types in Linux are not determined by their extensions, but by a header in the file. the file command will print useful information about the file 'asd'.]
+ls subdir-0[0123456789] [{wildcards} square brackets specify the possible options for the matching character, as opposed to the wildcard '?', which matches any character. this command can also be written as 'ls subdir-0[0-9]'.]
+ls /dev/sd[a-z] [{wildcards}]
+ls test/subdir-0[a-z0-9] [{wildcards}]
+mkdir {2018..2022}_{jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec} [{brace expansion} creates directories 2018_jan, 2018_feb, 2018_mar, ... , 2019_jan, ... , 2019_dec, ... 2021_nov, ... 2022_dec (cartesian product).]
+touch {2018..2022}_{jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec}/file{001..100} [{brace expansion} creates files file001,file002,...,file099,file0100 under each dir.]
+ls {2018..2022}_{jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec}/ [{brace expansion}]
+cat file{005..017} [{brace expansion} cat the contents of all files file005,file006,...,file016,file017]
+rm -ri deldir/ [-i ask/prompt before deleting anything.]
+locate -i --limit 3 *.conf [{find} -i case insensitive; --limit limit to specified number of results.]
+locale -S [{find} print info on locate command's database.]
+locate -e file.txt [{find} -e checks if file exists before reporting it; file may be indexed in db, but may have been deleted since it was added to the locate db.]
+locate --folow file.txt [{find} --folow follow symbolic links.]
+sudo updatedb [{find} update locate command's db indexes.]
+find -maxdepth 1 [-maxdepth descend at most X levels of directories below the starting-points.]
+find -maxdepth 1 -type d [error if -maxdepth comes after -type]
+wc -l < commands [-l print the number of lines in stdin.]
+find . -type f -size -100k -o -size +100M [-o find files with size less than 100Kb OR greater than 100Mb]
+find . -maxdepth 1 -type f -size +500M -exec cp {} /home/fabrizio/big_files/ \; [-exec execute command for each result; each result can be referred to with '{}'; the -exec flag must be closed with '\;'.]
+find . -maxdepth 1 -type f -size +500M -ok cp {} /home/fabrizio/big_files/ \; [-ok does the same as -exec, but will prompt the user for each result before executing the provided command.]
+find . -type f -name *-0?3.txt -ok rm {} \; [to prompt for delete for each result, use '-ok rm {}' instead of '-delete'.]
+shuf -i 1-100 -n 1 [{random} generate permutations; -i specify range LOW-HIGH; -n specify the number of permutations to generate (1 per line); if --repeat flag is not specified, no repetitions will be made, and so at most HIGH permutations will be generated.]
+tac file.txt [similar to the cat command, but prints the lines of the file in reverse, so from the last line to the first.]
+rev < input.txt [reverses the lines of a file, character wise.]
+sort -u file.txt [-u only output unique lines.]
+ls -l /etc | head -25 | sort -nrk 5 [{sort} -k specify the number of the column that should be sorted; can also be written as '-k 5nr'.]
+ls -lh /etc | head -25 | sort -hrk 5 [{sort} -h human-numeric sort; -h is incompatible with -n; can also be written as '-k 5hr'.]
+ls -lh /etc | head -25 | sort -Mk 6 [{sort} -M month sort; can also be written as '-k 6M'.]
+grep e words.txt [search for 'e' in lines of words.txt]
+grep -c e words.txt [-c print number of matching lines.]
+grep e words.txt input.txt
+ls -F [-F append indicator (one of */=>@|) to entries.]
+tar -cf archive.tar file1.txt file2.txt file3.txt [-c create tar archive archive.tar from file1.txt,file2.txt,file3.txt]
+tar -czf archive.tar.gz file1.txt file2.txt file3.txt [-z compress the resulting tarball with gzip.]
+tar -tf archive.tar [-t list the contents of the tar archive, without having to first unarchive it.]
+tar -xjf archive.tar.bz2 [-j decompress .bz2]
+tar -xJf coreutils-8.31.tar.xz [-J decompress .xz]
+apt show apache2 [cached packages. apt cache can be found in /var/lib/apt/lists.]
+vim /etc/apt/sources.list && sudo apt get update && sudo apt install dpkg-dev && apt get source <package-name> [{apt}{src} uncomment lines starting with 'deb-src' to allow downloading source code when installing new packages.]
+sudo apt-get clean
+sudo apt-get autoclean
+lsusb [{hardware}]
+dmesg | grep sdb [{hardware}]
+crontab -e [edit current crontab. sample lines: '* * * * * echo "Hello, World" >> ~/hello.txt' (will run the specified command every minute of everyday); '30 14 15 JUN * some_command' (will run every June 15 at 14:30); '0,15,30,45 * * * * some_command' (will run at 0/15/30/45 past every hour of everyday); '*/3 * */4 * * some_command' (will run every 3 minutes, every 4 days); '59 23 * JAN,DEC SUN some_command' (will run every sunday on January and December at 23:59); for more info see https://crontab.guru/]
+cat file.txt &> output.txt [{redirection} &> redirects both stdout and stderr.]
+stat --format %A /var/log/syslog [--format display only the access restrictions/file permissions.]
+pulseaudio -k [fix sound static.]
+ifconfig eth0 down && ifconfig eth0 hw ether 00:11:22:33:44:55 && ifconfig eth0 up [change MAC address of interface eth0 to 00:11:22:33:44:55.]
+sudo apt install virtualbox-guest-x11 virtualbox-guest-dkms [install on debian-based guest machine to enable shared clipboard between host and guest.]
+dmidecode --type 17
+systemctl enable netctl && systemctl enable dhcpcd [arch linux network configuration for lan ethernet.]
+pam_tally2 --reset --user fabrizio [To unlock a user manually after locked out from consecutive failed logins.]
+firejail --noprofile code [with firecfg configured (default firejail for all programs), run program outside of firejail.]
+youtube-dl -u 'fabrizio@example.com' -p 'password' -o '~/Videos/%(playlist)s/%(chapter_number)s - %(chapter)s/%(playlist_index)s - %(title)s.%(ext)s' https://www.udemy.com/my-favorite-course/learn/ --playlist-start 149
+lsb_release -a [{os}print operating system.]
+uname -a [{os} print operating system related info.]
+uname -r [kernel version.]
+ip link set wlp1s0 down && netctl start wlp1s0-TP-Link_99DD [use netctl to set up wireless wpa connection, after necessary firmware/drivers have been installed (wpa_supplicant not required!).]
+nvidia-settings -q gpucoretemp -t [Nvidia GPU temperature.]
+forticlientsslvpn_cli --proxy 10.1.0.17:8080 --server mydomain.com:9898 --vpnuser myusername
+sudo ufw default deny incoming
+mysql -u root -p < 01-create-schema.sql
+sudo firewall-cmd --list-all-zones [firewalld (default firewall on centOS 8) -- display all zones.]
+sudo firewall-cmd --info-service service_name [firewalld -- show service information.]
+sudo firewall-cmd --zone=public --add-service mysql [firewalld -- open mysql port (3306). N.B this is NOT persistent, use --persistent flag to persist your rule.]
+echo -e '\0033\0143' [clear scrollbal on linux xterm terminal emulator.]
+firewall-cmd --zone=public --add-port 8080/tcp
+pacman -Qet [List all packages explicitly installed and not required as dependencies.]
+less -SN file.txt [-S for no-wrap; -N to display line numbers.]
+xboxdrv --device-by-id 2f24:0091 --type xbox360 --device-name 'EasySMX ESM-9101' --silent [gamepad/controller ver for linux.]
+watch grep \"cpu MHz\" /proc/cpuinfo
+xargs -0 -I '{}' -n 1 youtube-dl -f bestaudio --extract-audio --audio-format mp3 --audio-quality 0 -o '/media/sf_util-vm/%(title)s.%(ext)s' '{}' < <(tr \n \0 </media/sf_util-vm/youtube-dl/youtube-dl.txt)
+c=0 rename 's/.*/sprintf("s02e%02d.mkv", ++$ENV{c})/e' *
+find -iname "*.mkv" | parallel 'ffmpeg -i {} -c:v h264 -c:a copy -crf 10 -preset ultrafast -s 1280x720 -vf subtitles={}:si=1 -map 0:v:0 -map 0:a:1 {.}.h264.mkv'
+betterlockscreen -u ~/.wallpapers/e55lborndfq21.jpg -r 1920x1080
+find . -type f | awk -F. '!a[$NF]++{print $NF}' [find all unique extensions.]
+ls | cat -n | while read n f; do mv "$f" `printf "s02e%02d.mkv" $n`; done [rename files in a directory to sequential numbers.]
+c=1 perl-rename 's/.*/sprintf("s02e%02d.mkv", $ENV{c}++)/e' *.mkv
+nvidia-settings --query CurrentMetaMode
+nvidia-settings --assign CurrentMetaMode="DPY-6: nvidia-auto-select @1920x108 +0+0 {ViewPortIn=1920x1080, ViewPortOut=1920x1080+0+0, ForceCompositionPipeline=On}, DPY-4: nvidia-auto-select @1366x768 +1920+0 {ViewPortIn=1366x768, ViewPortOut=1366x768+0+0, ForceCompositionPipeline=On}"
+find /dir -type f -printf "%f\n" [print only filename.]
+nmap -T4 -p- -A 192.168.1.104
+nikto -h http://192.168.1.104
+hydra -l root -P /usr/share/wordlists/metasploit/unix_passwords.txt ssh://10.0.2.4:22 -t 4 -V
+nvidia-settings -q CurrentMetaMode [{monitor}{multi-monitor} useful when configuring multi monitors with nvidia GPU.]
+wget --output-document=image.jpg https://www.example.com/images/ABC123.jpg
+sed -ri 's/([a-zA-Z])1/\1/g' src/app/api/services/products.service.ts [-r extended regex, -i in-place, '\1' backreference (capture group)]
